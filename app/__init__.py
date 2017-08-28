@@ -1,4 +1,6 @@
 # third-party imports
+import os
+
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -13,9 +15,16 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 
 def create_app(config_name):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(app_config[config_name])
-    app.config.from_pyfile('config.py')
+    if os.getenv('FLASK_CONFIG') == "production":
+        app = Flask(__name__)
+        app.config.update(
+            SECRET_KEY=os.getenv('SECRET_KEY'),
+            SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI')
+        )
+    else:
+        app = Flask(__name__, instance_relative_config=True)
+        app.config.from_object(app_config[config_name])
+        app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
     Bootstrap(app)
