@@ -5,7 +5,7 @@ bdist-mpkg==0.5.0
 certifi==2017.7.27.1
 click==6.7
 Cython==0.26
-Django==1.11.4
+Django==2.2.24
 dominate==2.3.1
 Flask==0.12.2
 Flask-Bootstrap==3.3.7.1
